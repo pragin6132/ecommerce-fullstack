@@ -1,0 +1,98 @@
+ecommerce-app/
+│
+├── backend/
+│   ├── ecommerce/                # main Django project settings
+│   │   ├── __init__.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   ├── asgi.py
+│   │   └── wsgi.py
+│   │
+│   ├── products/                 # products app (mobiles, cases, gifts)
+│   │   ├── migrations/
+│   │   ├── models.py
+│   │   ├── views.py
+│   │   ├── serializers.py
+│   │   ├── urls.py
+│   │   └── admin.py
+│   │
+│   ├── cart/                     # cart app
+│   │   ├── models.py
+│   │   ├── views.py
+│   │   ├── serializers.py
+│   │   ├── urls.py
+│   │   └── admin.py
+│   │
+│   ├── orders/                   # orders + checkout + payment
+│   │   ├── models.py
+│   │   ├── views.py
+│   │   ├── serializers.py
+│   │   ├── urls.py
+│   │   └── admin.py
+│   │
+│   ├── users/                    # authentication (register/login)
+│   │   ├── models.py
+│   │   ├── views.py
+│   │   ├── serializers.py
+│   │   ├── urls.py
+│   │   └── admin.py
+│   │
+│   ├── custom_items/             # custom skins & custom gifts
+│   │   ├── models.py
+│   │   ├── views.py
+│   │   ├── serializers.py
+│   │   ├── urls.py
+│   │   └── admin.py
+│   │
+│   ├── media/                    # uploaded images (local)
+│   ├── static/                   # static files (images, js, css)
+│   ├── venv/                     # virtual environment (optional)
+│   ├── manage.py
+│   └── requirements.txt
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Header.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── ProductCard.jsx
+│   │   │   ├── CartItem.jsx
+│   │   │   └── Loader.jsx
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── Home.jsx
+│   │   │   ├── ProductDetails.jsx
+│   │   │   ├── CategoryPage.jsx
+│   │   │   ├── Cart.jsx
+│   │   │   ├── Checkout.jsx
+│   │   │   ├── Login.jsx
+│   │   │   └── Register.jsx
+│   │   │
+│   │   ├── admin/                 # Admin UI (React)
+│   │   │   ├── AdminDashboard.jsx
+│   │   │   ├── AddProduct.jsx
+│   │   │   ├── UpdateProduct.jsx
+│   │   │   └── OrdersList.jsx
+│   │
+│   │   ├── services/              # API communication
+│   │   │   ├── api.js
+│   │   │   ├── productService.js
+│   │   │   ├── cartService.js
+│   │   │   ├── authService.js
+│   │   │   └── paymentService.js
+│   │
+│   │   ├── context/               # global state
+│   │   │   ├── CartContext.jsx
+│   │   │   └── UserContext.jsx
+│   │
+│   │   ├── utils/
+│   │   ├── App.js
+│   │   ├── index.js
+│   │   └── tailwind.config.js
+│   │
+│   ├── package.json
+│   └── README.md
+│
+├── README.md                      # main documentation
+└── .gitignore
