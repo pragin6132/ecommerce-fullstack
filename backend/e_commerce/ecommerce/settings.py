@@ -105,6 +105,9 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # DATABASE - MYSQL
 # =========================================================
 
+MYSQL_SSL_MODE = os.environ.get('MYSQL_SSL_MODE', 'REQUIRED').upper()
+MYSQL_OPTIONS = {} if MYSQL_SSL_MODE == 'DISABLED' else {'ssl': {}}
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -113,9 +116,7 @@ DATABASES = {
         'PASSWORD': os.environ.get('MYSQL_PASSWORD', ''),
         'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
         'PORT': os.environ.get('MYSQL_PORT', '3306'),
-        'OPTIONS': {
-            'ssl_mode': os.environ.get('MYSQL_SSL_MODE', 'REQUIRED'),
-        },
+        'OPTIONS': MYSQL_OPTIONS,
     }
 }
 
