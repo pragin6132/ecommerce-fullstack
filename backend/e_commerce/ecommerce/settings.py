@@ -29,7 +29,10 @@ def get_env_list(name, default):
     return [item.strip() for item in value.split(",") if item.strip()]
 
 
-ALLOWED_HOSTS = get_env_list("DJANGO_ALLOWED_HOSTS", ["localhost", "127.0.0.1"])
+ALLOWED_HOSTS = get_env_list(
+    "DJANGO_ALLOWED_HOSTS",
+    ["localhost", "127.0.0.1"]
+)
 
 
 # =========================================================
@@ -106,7 +109,14 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # =========================================================
 
 MYSQL_SSL_MODE = os.environ.get('MYSQL_SSL_MODE', 'REQUIRED').upper()
-MYSQL_OPTIONS = {} if MYSQL_SSL_MODE == 'DISABLED' else {'ssl': {}}
+
+MYSQL_OPTIONS = (
+    {}
+    if MYSQL_SSL_MODE == 'DISABLED'
+    else {
+        'ssl': True,
+    }
+)
 
 DATABASES = {
     'default': {
@@ -182,12 +192,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = get_env_list(
     "CORS_ALLOWED_ORIGINS",
-    ["http://localhost:5173", "http://127.0.0.1:5173"],
+    [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
 )
 
 CSRF_TRUSTED_ORIGINS = get_env_list(
     "CSRF_TRUSTED_ORIGINS",
-    ["http://localhost:5173", "http://127.0.0.1:5173"],
+    [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
 )
 
 
