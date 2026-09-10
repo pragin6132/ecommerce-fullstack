@@ -1,12 +1,14 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import permissions, status
 from .models import Cart, CartItem
 from products.models import Product
 from .serializers import CartSerializer
 from django.contrib.auth.models import User
 
 class CartView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request, user_id):
         try:
             cart, created = Cart.objects.get_or_create(user_id=user_id)
@@ -17,6 +19,8 @@ class CartView(APIView):
 
 
 class AddToCartView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
     def post(self, request):
         product_id = request.data.get("product_id")
         user_id = request.data.get("user_id")
@@ -47,6 +51,8 @@ class AddToCartView(APIView):
 
 
 class CartItemView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
     def patch(self, request, item_id):
         user_id = request.data.get("user_id")
         quantity = request.data.get("quantity")

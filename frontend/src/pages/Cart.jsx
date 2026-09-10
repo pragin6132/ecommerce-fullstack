@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getCart, removeCartItem, updateCartItem } from "../services/cartService";
+import { getMediaUrl } from "../services/api";
+import { getAuthenticatedUserId } from "../services/authService";
 
 function Cart() {
+  const navigate = useNavigate();
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const userId = localStorage.getItem("user_id");
+  const userId = getAuthenticatedUserId();
 
   useEffect(() => {
     const loadCart = async () => {
       if (!userId) {
-        setError("Please login to view your cart.");
-        setLoading(false);
+        navigate("/login", { replace: true });
         return;
       }
 
@@ -21,6 +24,10 @@ function Cart() {
         setCart(data);
       } catch (err) {
         console.error(err);
+        if (err.response?.status === 401) {
+          navigate("/login", { replace: true });
+          return;
+        }
         setError("Unable to load cart.");
       } finally {
         setLoading(false);
@@ -28,7 +35,7 @@ function Cart() {
     };
 
     loadCart();
-  }, [userId]);
+  }, [navigate, userId]);
 
   if (loading) {
     return <p className="status-message">Loading cart...</p>;
@@ -41,23 +48,41 @@ function Cart() {
   const items = cart?.items || [];
 
   const handleQuantityChange = async (item, quantity) => {
+    if (!getAuthenticatedUserId()) {
+      navigate("/login");
+      return;
+    }
+
     try {
       setError("");
       const updatedCart = await updateCartItem(item.id, quantity, userId);
       setCart(updatedCart);
     } catch (err) {
       console.error(err);
+      if (err.response?.status === 401) {
+        navigate("/login");
+        return;
+      }
       setError("Unable to update cart item.");
     }
   };
 
   const handleRemove = async (itemId) => {
+    if (!getAuthenticatedUserId()) {
+      navigate("/login");
+      return;
+    }
+
     try {
       setError("");
       const updatedCart = await removeCartItem(itemId, userId);
       setCart(updatedCart);
     } catch (err) {
       console.error(err);
+      if (err.response?.status === 401) {
+        navigate("/login");
+        return;
+      }
       setError("Unable to remove cart item.");
     }
   };
@@ -79,7 +104,7 @@ function Cart() {
               <div className="cart-item" key={item.id}>
                 {item.product.image && (
                   <img
-                    src={`http://127.0.0.1:8000${item.product.image}`}
+                    src={getMediaUrl(item.product.image)}
                     alt={item.product.name}
                   />
                 )}

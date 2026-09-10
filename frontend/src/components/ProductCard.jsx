@@ -1,17 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { addToCart } from "../services/cartService";
+import { getMediaUrl } from "../services/api";
+import { getAuthenticatedUserId } from "../services/authService";
 
 function ProductCard({ product }) {
+  const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [adding, setAdding] = useState(false);
 
   const handleAddToCart = async () => {
-    const userId = localStorage.getItem("user_id");
+    const userId = getAuthenticatedUserId();
 
     if (!userId) {
-      setError("Please login before adding products to cart.");
+      navigate("/login");
       return;
     }
 
@@ -22,6 +25,10 @@ function ProductCard({ product }) {
       setMessage("Added to cart.");
     } catch (err) {
       console.error(err);
+      if (err.response?.status === 401) {
+        navigate("/login");
+        return;
+      }
       setError("Unable to add product to cart.");
     } finally {
       setAdding(false);
@@ -33,7 +40,7 @@ function ProductCard({ product }) {
 
       {product.image ? (
         <img
-          src={`http://127.0.0.1:8000${product.image}`}
+          src={getMediaUrl(product.image)}
           alt={product.name}
         />
       ) : (
